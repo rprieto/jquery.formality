@@ -11,17 +11,19 @@ $.fn.extend(
       var form = {};
       var $inputs = $('input,select', this);
       
-      $inputs.filter(':text').each(function(index, item) {
+      $inputs.filter(':text').each(function(_, item) {
         form[getKey($(item))] = $(item).val();
       });
       
-      $inputs.filter(':radio:checked').each(function(index, item) {
+      $inputs.filter(':radio:checked').each(function(_, item) {
         form[getKey($(item))] = $(item).val();
       });
     
       $inputs.filter('select').each(function(index, item) {
-        var value = $(item).find('option:selected:first').val();
-        form[getKey($(item))] = value;
+        var values = $(item).find('option:selected').map(function(_, option) {
+          return $(option).val();
+        });
+        form[getKey($(item))] = values.length > 1 ? values : values[0];
       });
 
       return form;      
