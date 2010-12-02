@@ -1,4 +1,3 @@
-
 $.fn.extend(
   
   (function() {
@@ -41,7 +40,8 @@ $.fn.extend(
     var formality = function() {
       var form = {};
       var $inputs = $('input,select', this);      
-      reduce($inputs.filter(':text,:radio:checked'), textsAndRadios, form);
+      reduce($inputs.filter(':text'), textsAndRadios, form);
+      reduce($inputs.filter(':radio:checked'), textsAndRadios, form);
       reduce($inputs.filter('select'), selects, form);
       reduce($inputs.filter(':checkbox'), checkboxes, form);
       return form;      
