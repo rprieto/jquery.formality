@@ -1,4 +1,4 @@
-This jQuery plugin processes any part of the DOM and returns an object representation of the inputs.
+*Formality* is a jQuery plugin processes any part of the DOM and returns an object representation of the inputs.
 
 Given the following DOM structure:
 
