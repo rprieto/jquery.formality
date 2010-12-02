@@ -3,8 +3,8 @@ $.fn.extend(
   
   (function() {
     
-    var getKey = function($item) {
-      return $item.attr('name');
+    var getKey = function($item) {      
+      return $item.attr('name') || $item.attr('id')
     };
     
     var formality = function() {
