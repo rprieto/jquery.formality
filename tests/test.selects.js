@@ -43,5 +43,19 @@ describe('radio inputs', function() {
     expect(form.foo[1]).toEqual('two');
   });
 
+  it('does not create a propery for lists without a selection', function() {
+    var fixture = $(
+      '<form>' + 
+        '<select name="foo" multiple="multiple">' + 
+          '<option value="one">one</option>' +
+          '<option value="two">two</option>' +
+          '<option value="three">three</option>' +
+        '</select>' +
+      '</form>'
+    );
+    var form = fixture.formality();
+    expect(form.foo).toBeUndefined();
+  });
+
 });
 
