@@ -1,13 +1,6 @@
 
 describe('inputs', function() {
 
-  it('returns an empty object when no inputs are found', function() {
-    var fixture = $(
-      '<form></form>'
-    );
-    expect(fixture.formality()).toEqual({});
-  });
-
   it('uses the input names, or the ID if they have no name', function() {
     var fixture = $(
       '<form>' + 
