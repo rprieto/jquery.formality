@@ -11,9 +11,13 @@ $.fn.extend(
       var form = {};
       var $inputs = $('input', this);
       
-      $inputs.each(function(index, item) {
+      $inputs.filter(':text').each(function(index, item) {
         form[getKey($(item))] = $(item).val();
       });
+      
+      $inputs.filter(':radio:checked').each(function(index, item) {        
+        form[getKey($(item))] = $(item).val();
+		  });
     
       return form;      
     };
