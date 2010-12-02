@@ -1,15 +1,27 @@
-$.fn.extend({
 
-  formality: function() {
-    var form = {};
-    var $inputs = $('input', this);
+$.fn.extend(
+  
+  (function() {
     
-    $inputs.each(function(index, item) {
-      var key = $(item).attr('name');
-      form[key] = $(item).val();
-    });
+    var getKey = function($item) {
+      return $item.attr('name');
+    };
     
-    return form;
-  }
-
-});
+    var formality = function() {
+      var form = {};
+      var $inputs = $('input', this);
+      
+      $inputs.each(function(index, item) {
+        form[getKey($(item))] = $(item).val();
+      });
+    
+      return form;      
+    };
+    
+    return {
+      formality: formality
+    }
+    
+  })()
+    
+);
