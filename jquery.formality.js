@@ -14,15 +14,10 @@ $.fn.extend(
       return aggregate;
     };
 
-    var textfields = function($item, form) {
+    var textsAndRadios = function($item, form) {
       form[getKey($item)] = $item.val();
       return form;
     }
-
-    var radios = function($item, form) {
-      form[getKey($item)] = $item.val();
-      return form;
-    };
 
     var selects = function($item, form) {
       var values = $item.find('option:selected').map(function(_, option) {
@@ -46,8 +41,7 @@ $.fn.extend(
     var formality = function() {
       var form = {};
       var $inputs = $('input,select', this);      
-      reduce($inputs.filter(':text'), textfields, form);
-      reduce($inputs.filter(':radio:checked'), radios, form);
+      reduce($inputs.filter(':text,:radio:checked'), textsAndRadios, form);
       reduce($inputs.filter('select'), selects, form);
       reduce($inputs.filter(':checkbox'), checkboxes, form);
       return form;      
