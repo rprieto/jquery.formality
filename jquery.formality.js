@@ -26,12 +26,14 @@ $.fn.extend(
         form[getKey($(item))] = values.length > 1 ? values : values[0];
       });
 
-      $inputs.filter(':checkbox:checked').each(function(_, item) {
+      $inputs.filter(':checkbox').each(function(_, item) {
         var name = getKey($(item));
         if (!(name in form)) {
           form[name] = [];
         }
-        form[name].push($(item).val());
+        if ($(item).is(':checked')) {
+          form[name].push($(item).val());
+	}
       });
 
       return form;      
