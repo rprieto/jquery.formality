@@ -15,5 +15,6 @@ describe('inputs', function() {
     expect(form.fizzName).toBeDefined();    
     expect(form.fizzId).toBeUndefined();    
   });
-  
+
 });
+
