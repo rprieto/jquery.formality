@@ -2,35 +2,41 @@ This jQuery plugin processes any part of the DOM and returns an object represent
 
 Given the following DOM structure:
 
-<form id="data">
-  <input type="text" name="firstName" value="John" />
-  <input type="text" name="lastName" value="Doe" />
-  <input type="radio" id="gender" value="male" checked="checked" />
-  <input type="radio" id="gender" value="female" />
-  <select id="interests" multiple="multiple">
-    <option value="reading" selected="selected">Likes reading</option>
-    <option value="travelling">Likes travelling</option>
-    <option value="music" selected="selected">Plays music</option>
-  </select>
-  <input type="checkbox" name="pets" value="dog" checked="checked">Has a dog</input>
-  <input type="checkbox" name="pets" value="cat">Has a cat</input>
-</form>
+<pre>
+  <form id="data">
+    <input type="text" name="firstName" value="John" />
+    <input type="text" name="lastName" value="Doe" />
+    <input type="radio" id="gender" value="male" checked="checked" />
+    <input type="radio" id="gender" value="female" />
+    <select id="interests" multiple="multiple">
+      <option value="reading" selected="selected">Likes reading</option>
+      <option value="travelling">Likes travelling</option>
+      <option value="music" selected="selected">Plays music</option>
+    </select>
+    <input type="checkbox" name="pets" value="dog" checked="checked">Has a dog</input>
+    <input type="checkbox" name="pets" value="cat">Has a cat</input>
+  </form>
+</pre>
 
 You can call
 
-$('#data').formality()
+<pre>
+  $('#data').formality()
+</pre>
 
 And it will return the following object:
 
-{
-  firstName: 'John',
-  lastName: 'Doe',
-  gender: 'male',
-  interests: ['reading', 'music'],
-  pets: ['dog']
-}
+<pre>
+  {
+    firstName: 'John',
+    lastName: 'Doe',
+    gender: 'male',
+    interests: ['reading', 'music'],
+    pets: ['dog']
+  }
+</pre>
 
-Formality was built as an aternative to jQuery.parcel for cases where we simply need to extract form values.
+Formality was built as an aternative to <a href="http://github.com/luning/jquery.parcel">jQuery.parcel</a> for cases where we simply need to extract form values.
 It does not intend to match the exhaustive features of parcel, but is faster in its limited domain.
 
 Note that it doesn't hold any internal cache or structure so there is no need to sync when updating the DOM programatically.
