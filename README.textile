@@ -36,8 +36,7 @@ And it will return the following object:
   }
 </pre>
 
-Formality was built as an aternative to <a href="http://github.com/luning/jquery.parcel">jQuery.parcel</a> for cases where we simply need to extract form values.
-It does not intend to match the exhaustive features of parcel, but is faster in its limited domain.
+Formality was built as an aternative to <a href="http://github.com/luning/jquery.parcel">jQuery.parcel</a> for cases where we simply need to extract form values. It does not intend to match the exhaustive features of parcel, but is up to 10 times faster when reading values - especially when processing large forms in Internet Explorer.
 
 Note that it doesn't hold any internal cache or structure so there is no need to sync when updating the DOM programatically.
 Simply call $('#foo').formality() whenever you want to read the object representation of the user input.
