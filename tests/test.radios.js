@@ -24,4 +24,14 @@ describe('radio inputs', function() {
     expect(form.foo).toEqual('one');  
   });
   
+  it('ignores radio buttons with no selections', function() {
+    var fixture = $(
+      '<form>' + 
+        '<input type="radio" name="foo" value="one" />' + 
+        '<input type="radio" name="foo" value="two" />' +        
+      '</form>'
+    );    
+    expect(fixture.formality()).toEqual({});  
+  });
+  
 });
