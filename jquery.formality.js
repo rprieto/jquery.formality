@@ -6,7 +6,7 @@ $.fn.extend({
     
     $inputs.each(function(index, item) {
       var key = $(item).attr('name');
-      form[key] = true;
+      form[key] = $(item).val();
     });
     
     return form;
