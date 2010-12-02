@@ -10,7 +10,7 @@ describe('radio inputs', function() {
       '</form>'
     );
     var form = fixture.formality();
-    expect(Object.keys(form).length).toEqual(2);  
+    expect(Object.keys(form).length).toBe(2);  
   });
 
   it('uses the value of the checked radio button', function() {
@@ -21,7 +21,7 @@ describe('radio inputs', function() {
       '</form>'
     );
     var form = fixture.formality();
-    expect(form.foo).toEqual('one');  
+    expect(form.foo).toBe('one');  
   });
   
   it('ignores radio buttons with no selections', function() {

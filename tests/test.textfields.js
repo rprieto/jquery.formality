@@ -9,7 +9,7 @@ describe('text inputs', function() {
       '</form>'
     );
     var form = fixture.formality();
-    expect(Object.keys(form).length).toEqual(2);    
+    expect(Object.keys(form).length).toBe(2);    
   });
 
   it('uses the text input values as the object values', function() {
@@ -19,8 +19,8 @@ describe('text inputs', function() {
         '<input name="bar" value="two" />' +
       '</form>'
     );
-    expect(fixture.formality().foo).toEqual('one');
-    expect(fixture.formality().bar).toEqual('two');
+    expect(fixture.formality().foo).toBe('one');
+    expect(fixture.formality().bar).toBe('two');
   });
   
   it('considers text inputs with no values as empty strings', function() {
@@ -29,7 +29,7 @@ describe('text inputs', function() {
         '<input name="foo" />' + 
       '</form>'
     );
-    expect(fixture.formality().foo).toEqual('');
+    expect(fixture.formality().foo).toBe('');
   });
   
 });

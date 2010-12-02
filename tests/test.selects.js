@@ -11,7 +11,7 @@ describe('radio inputs', function() {
       '</form>'
     );
     var form = fixture.formality();
-    expect(form.foo).toEqual('one');  
+    expect(form.foo).toBe('one');  
   });
 
   it('uses the first option is no option is selected explicitely', function() {
@@ -24,7 +24,7 @@ describe('radio inputs', function() {
       '</form>'
     );
     var form = fixture.formality();
-    expect(form.foo).toEqual('one');  
+    expect(form.foo).toBe('one');  
   });
 
   it('creates an array of values for lists with multiple selections', function() {
@@ -38,9 +38,9 @@ describe('radio inputs', function() {
       '</form>'
     );
     var form = fixture.formality();
-    expect(form.foo.length).toEqual(2);
-    expect(form.foo[0]).toEqual('one');
-    expect(form.foo[1]).toEqual('two');
+    expect(form.foo.length).toBe(2);
+    expect(form.foo[0]).toBe('one');
+    expect(form.foo[1]).toBe('two');
   });
 
   it('does not create a propery for lists without a selection', function() {
