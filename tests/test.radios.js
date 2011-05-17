@@ -21,7 +21,9 @@ describe('radio inputs', function() {
       '</form>'
     );
     var form = fixture.formality();
-    expect(form.foo).toBe('one');  
+    expect(form).toEqual({
+    	foo: 'one'
+    });  
   });
   
   it('ignores radio buttons with no selections', function() {
@@ -30,8 +32,9 @@ describe('radio inputs', function() {
         '<input type="radio" name="foo" value="one" />' + 
         '<input type="radio" name="foo" value="two" />' +        
       '</form>'
-    );    
-    expect(fixture.formality()).toEqual({});  
+    );   
+    var form = fixture.formality(); 
+    expect(form).toEqual({});  
   });
   
 });

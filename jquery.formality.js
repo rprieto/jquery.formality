@@ -21,7 +21,7 @@ $.fn.extend(
     var selects = function($item, form) {
       var values = $item.find('option:selected').map(function(_, option) {
         return $(option).val();
-      });
+      }).get();
       form[getKey($item)] = values.length > 1 ? values : values[0];
       return form;
     };

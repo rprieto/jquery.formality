@@ -10,9 +10,9 @@ describe('checkboxes', function() {
       '</form>'
     );
     var form = fixture.formality();
-    expect(form.foo.length).toBe(2);
-    expect(form.foo[0]).toBe('one');  
-    expect(form.foo[1]).toBe('two');    
+    expect(form).toEqual({
+    	foo: ['one', 'two']
+    });
   });
 
   it('returns an array even for a single checked value', function() {
@@ -24,8 +24,9 @@ describe('checkboxes', function() {
       '</form>'
     );
     var form = fixture.formality();
-    expect(form.foo.length).toBe(1);
-    expect(form.foo[0]).toBe('one');   
+    expect(form).toEqual({
+    	foo: ['one']
+    });
   });
 
   it('returns an empty array for checkbox groups with no selections', function() {
@@ -36,7 +37,9 @@ describe('checkboxes', function() {
       '</form>'
     );
     var form = fixture.formality();
-    expect(form.foo.length).toBe(0);
+    expect(form).toEqual({
+    	foo: []
+    });
   });
   
 });

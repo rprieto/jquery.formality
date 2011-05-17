@@ -1,5 +1,5 @@
 
-describe('radio inputs', function() {
+describe('select inputs', function() {
 
   it('reads the selected value from a dropdown list', function() {
     var fixture = $(
@@ -11,7 +11,9 @@ describe('radio inputs', function() {
       '</form>'
     );
     var form = fixture.formality();
-    expect(form.foo).toBe('one');  
+    expect(form).toEqual({
+    	foo: 'one'
+    });  
   });
 
   it('uses the first option is no option is selected explicitely', function() {
@@ -24,7 +26,9 @@ describe('radio inputs', function() {
       '</form>'
     );
     var form = fixture.formality();
-    expect(form.foo).toBe('one');  
+    expect(form).toEqual({
+    	foo: 'one'
+    });  
   });
 
   it('creates an array of values for lists with multiple selections', function() {
@@ -38,9 +42,9 @@ describe('radio inputs', function() {
       '</form>'
     );
     var form = fixture.formality();
-    expect(form.foo.length).toBe(2);
-    expect(form.foo[0]).toBe('one');
-    expect(form.foo[1]).toBe('two');
+    expect(form).toEqual({
+    	foo: ['one', 'two']
+    });
   });
 
   it('does not create a propery for lists without a selection', function() {
@@ -54,7 +58,7 @@ describe('radio inputs', function() {
       '</form>'
     );
     var form = fixture.formality();
-    expect(form.foo).toBeUndefined();
+    expect(form).toEqual({});
   });
 
 });

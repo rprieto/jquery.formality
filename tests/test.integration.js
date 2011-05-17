@@ -25,18 +25,15 @@ describe('integration', function() {
       '</form>'
     );
     var form = fixture.formality();
-    expect(Object.keys(form).length).toBe(4);
-    expect(form.myText).toBe('bar');
-    expect(form.myRadio).toBe('one');
-    expect(form.mySelect.length).toBe(2);
-    expect(form.mySelect[0]).toBe('three');
-    expect(form.mySelect[1]).toBe('four');
-    expect(form.myCheck.length).toBe(2);
-    expect(form.myCheck[0]).toBe('six');
-    expect(form.myCheck[1]).toBe('seven');
+    expect(form).toEqual({
+    	myText: 'bar',
+    	myRadio: 'one',
+    	mySelect: ['three', 'four'],
+    	myCheck: ['six', 'seven']
+    });
   });
 
-it('only processes the DOM from where it is called', function() {
+  it('only processes the DOM from where it is called', function() {
     var fixture = $(
       '<form>' + 
         '<input type="text" name="foo" value="one" />' +
@@ -48,9 +45,10 @@ it('only processes the DOM from where it is called', function() {
       '</form>'
     );
     var form = fixture.find('#content').formality();
-    expect(Object.keys(form).length).toBe(2);
-    expect(form.bar).toBe('two');
-    expect(form.fizz).toBe('three');
+    expect(form).toEqual({
+    	bar: 'two',
+    	fizz: 'three'
+    });
   });
   
 });
