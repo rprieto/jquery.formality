@@ -1,13 +1,13 @@
 
 describe('nested', function() {
 
-  it('processes the data-formality-class attribute to create nested objects', function() {
+  it('processes the data-formality-nested attribute to create nested objects', function() {
     var fixture = $(
       '<form>' + 
         '<input type="text" name="name" value="Australia" />' +
-        '<div data-formality-class="government">' +
+        '<div data-formality-nested="government">' +
           '<input type="text" name="monarch" value="Elizabeth II" />' +
-	      '<div data-formality-class="ministers">' +
+	      '<div data-formality-nested="ministers">' +
 	          '<input type="text" name="primeMinister" value="Julia Gillard" />' +
 	          '<input type="text" name="foreignAffairs" value="Kevin Rudd" />' +
 	        '</div>' +
@@ -30,15 +30,15 @@ describe('nested', function() {
   });
 
 
-  xit('processes the data-formality-array attribute to create arrays', function() {
+  it('processes the data-formality-nested attribute with indexes to create arrays', function() {
     var fixture = $(
       '<form>' + 
         '<input type="text" name="name" value="Australia" />' +
-        '<div data-formality-array="cities">' +
+        '<div data-formality-nested="cities[0]">' +
           '<input type="text" name="name" value="Sydney" />' +
           '<input type="text" name="postcode" value="2000" />' +
         '</div>' +
-        '<div data-formality-array="cities">' +
+        '<div data-formality-nested="cities[1]">' +
           '<input type="text" name="name" value="Melbourne" />' +
           '<input type="text" name="postcode" value="3000" />' +
         '</div>' + 

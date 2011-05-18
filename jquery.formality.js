@@ -20,21 +20,11 @@ $.fn.extend(
 	//      $input1, $input2
 	//    ],
 	//
-	//    classes: [
-	//      class1: { elements, classes, arrays },
-	//      class2: { elements, classes, arrays }
-	//    ],
-	//
-	//    arrays: [
-	//      array1: [
-	//        { elements, classes, arrays },
-	//        { elements, classes, arrays }
-	//      ],
-	//      array2: [
-	//        { elements, classes, arrays },
-	//        { elements, classes, arrays }
-	//      ]
-	//    ]
+	//    children: {
+	//      myChild:    { elements, children },
+	//      myArray[0]: { elements, children }
+	//      myArray[1]: { elements, children }
+	//    },
 	//  	
       
 	var scaffolding = function() {
@@ -42,25 +32,24 @@ $.fn.extend(
 		var hierarchyLevel = function() {
 			return {
 				elements: [],
-				classes: {},
-				arrays: {}
+				children: {}
 			};
 		};
 			
 	    var getAttributes = function($root, $input) {
-	    	var $usefulParents = $input.parents('*[data-formality-class]');
+	    	var $usefulParents = $input.parents('*[data-formality-nested]');
 	    	return $usefulParents.map(function(_, parent) {
-	    		return $(parent).attr('data-formality-class');
+	    		return $(parent).attr('data-formality-nested');
 	    	}).get().reverse();
 	    };
 	    
-	    var completeHierarchy = function(object, classes) {
+	    var completeHierarchy = function(object, attributes) {
 	    	var leaf = object;
-	    	reduce(classes, function(name, result) {
-	    		if (!(result.classes[name])) {
-	    			result.classes[name] = hierarchyLevel();
+	    	reduce(attributes, function(name, result) {
+	    		if (!(result.children[name])) {
+	    			result.children[name] = hierarchyLevel();
 	    		}
-	    		leaf = result.classes[name];
+	    		leaf = result.children[name];
 	    		return leaf;
 	    	}, object);
 	    	return leaf;
@@ -149,8 +138,18 @@ $.fn.extend(
     	
 	    var processLevel = function(level, object) {
 	    	var object = inputSet().objectFromValues(level.elements);
-	    	Object.keys(level.classes).forEach(function(name) {
-	    		object[name] = processLevel(level.classes[name], object[name]);
+	    	Object.keys(level.children).forEach(function(name) {
+	    		var arrayMatch = name.match(/(.*?)\[(\d)\]/);
+	    		if (arrayMatch) {
+		   			var arrayName = arrayMatch[1];
+	    			var index = arrayMatch[2];
+	    			if (!(object[arrayName])) {
+	    				object[arrayName] = [];
+	    			}
+	    			object[arrayName][index] = processLevel(level.children[name], object[arrayName][index]);
+	    		} else {
+	    			object[name] = processLevel(level.children[name], object[name]);
+	    		}
 	    	});
 	    	return object;
 	    };
