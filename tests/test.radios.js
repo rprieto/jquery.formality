@@ -10,7 +10,8 @@ describe('radio inputs', function() {
       '</form>'
     );
     var form = fixture.formality();
-    expect(Object.keys(form).length).toBe(2);  
+    expect(form.foo).toBeDefined();  
+    expect(form.bar).toBeDefined();  
   });
 
   it('uses the value of the checked radio button', function() {
