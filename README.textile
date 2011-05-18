@@ -1,5 +1,7 @@
 *Formality* is a jQuery plugin processes any part of the DOM and returns an object representation of the inputs.
 
+=Simple example=
+
 Given the following DOM structure:
 
 <pre>
@@ -27,17 +29,94 @@ You can call
 And it will return the following object:
 
 <pre>
-  {
-    firstName: 'John',
-    lastName: 'Doe',
-    gender: 'male',
-    interests: ['reading', 'music'],
-    pets: ['dog']
-  }
+{
+  firstName: 'John',
+  lastName: 'Doe',
+  gender: 'male',
+  interests: ['reading', 'music'],
+  pets: ['dog']
+}
 </pre>
 
-Formality was built as an aternative to <a href="http://github.com/luning/jquery.parcel">jQuery.parcel</a> for cases where we simply need to extract form values. It does not intend to match the exhaustive features of parcel, but is up to 10 times faster when reading values - especially when processing large forms in Internet Explorer.
+=Nested objects=
 
-Note that it doesn't hold any internal cache or structure so there is no need to sync when updating the DOM programatically.
-Simply call $('#foo').formality() whenever you want to read the object representation of the user input.
+Formality can also create a hierarchical representation of a nested form by adding a few attributes to the HTML. This is useful when the user can create several items on the front end, which we itend on sending to the server by an ajax call.
+
+When creating the resulting object, formality uses the *data-formality-nested* attribute to create the hierarchy. Its value can be:
+
+* Any string, which will group any child element under that name. For example:
+
+<pre>
+  <form>
+    <input type="text" name="name" value="Australia" />
+    <div data-formality-nested="government">
+      <input type="text" name="monarch" value="Elizabeth II" />
+      <div data-formality-nested="ministers">
+        <input type="text" name="primeMinister" value="Julia Gillard" />
+        <input type="text" name="foreignAffairs" value="Kevin Rudd" />
+      </div>
+    </div>
+  </form>
+</pre>
+
+Will generate the following object:
+
+<pre>
+{
+  name: 'Australia',
+  government: {
+    monarch: 'Elizabeth II',
+    ministers: {
+      primeMinister: 'Julia Gillard',
+      foreignAffairs: 'Kevin Rudd'
+    }
+  }
+}
+</pre>
+
+* A string which ends in [x], which will create an array in which the values will be pushed. For example:
+
+<pre>
+  <form> 
+    <input type="text" name="name" value="Australia" />
+    <div data-formality-nested="cities[0]">
+      <input type="text" name="name" value="Sydney" />
+      <input type="text" name="postcode" value="2000" />
+    </div>
+    <div data-formality-nested="cities[1]">
+      <input type="text" name="name" value="Melbourne" />
+      <input type="text" name="postcode" value="3000" />
+    </div> 
+  </form>
+</pre>
+
+will generate the following object:
+
+<pre>
+{
+  name: 'Australia',
+  cities: [
+    {
+      name: 'Sydney',
+      postcode: '2000'
+    },
+    {
+      name: 'Melbourne',
+      postcode: '3000'
+    },
+  ]
+}
+</pre>
+
+=Alternatives=
+
+Formality was built as an aternative to other jQuery pugins such as <a href="http://github.com/luning/jquery.parcel">jQuery Parcel</a> or <a href="https://github.com/jquery/jquery-datalink">jQuery Datalink</a>.
+
+It does not intend to match the exhaustive features of these plugins, but provides advantages of its own:
+* It handles semantically nested forms to create a full object hierarchy
+* It does not bind any events, and thus will never clash with your existing behaviour
+* Since it does maintain an internal cache, so there is not need to manually sync when updating the DOM
+* It can be up to 10 times faster when reading values, especially when processing large forms in Internet Explorer
+
+In summary, simply call $('#foo').formality() whenever you want to read the object representation of the user input!
 
