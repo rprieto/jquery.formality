@@ -3,7 +3,7 @@ $.fn.extend(
   (function() {
         
 	//
-	// Utils
+	// ECMA Script 5 functions implemented by Chrome and Firefox 4, but not older browsers
 	//
 	
     var reduce = function(list, fn, aggregate) {
@@ -12,6 +12,14 @@ $.fn.extend(
       });
       return aggregate;
     };
+    
+	var getKeys = function(obj){
+		var keys = [];
+		for(var key in obj){
+			keys.push(key);
+		}
+		return keys;
+	}
     
 	//
 	// Structure of target inputs that mirrors the final hierarchy
@@ -138,7 +146,7 @@ $.fn.extend(
     	
 	    var processLevel = function(level, object) {
 	    	var object = inputSet().objectFromValues(level.elements);
-	    	Object.keys(level.children).forEach(function(name) {
+	    	getKeys(level.children).forEach(function(name) {
 	    		var arrayMatch = name.match(/(.*?)\[(\d)\]/);
 	    		if (arrayMatch) {
 		   			var arrayName = arrayMatch[1];
