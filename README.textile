@@ -1,6 +1,8 @@
+h1. jQuery formality
+
 *Formality* is a jQuery plugin processes any part of the DOM and returns an object representation of the inputs.
 
-=Simple example=
+h2. Simple example
 
 Given the following DOM structure:
 
@@ -38,13 +40,15 @@ And it will return the following object:
 }
 </pre>
 
-=Nested objects=
+h2. Nested objects
 
-Formality can also create a hierarchical representation of a nested form by adding a few attributes to the HTML. This is useful when the user can create several items on the front end, which we itend on sending to the server by an ajax call.
+_Formality_ can also create a hierarchical representation of a nested form by adding a few attributes to the HTML. This is useful when the user can create several items on the front end, which we itend on sending to the server by an ajax call.
 
-When creating the resulting object, formality uses the *data-formality-nested* attribute to create the hierarchy. Its value can be:
+When creating the resulting object, formality uses the *data-formality-nested* attribute to create the hierarchy. This handles two types of nesting:
 
-* Any string, which will group any child element under that name. For example:
+h3. Objects
+
+The basic case for using *data-formality-nested* is to group elements logically. This allows to create a javascript object closer to your domain model.
 
 <pre>
   <form>
@@ -74,7 +78,9 @@ Will generate the following object:
 }
 </pre>
 
-* A string which ends in [x], which will create an array in which the values will be pushed. For example:
+3. Arrays
+
+When using an array-like notation for the attribute value, _formality_ will create the corresponding array in which the values will be pushed.
 
 <pre>
   <form> 
@@ -108,9 +114,9 @@ will generate the following object:
 }
 </pre>
 
-=Alternatives=
+h2. Alternatives
 
-Formality was built as an aternative to other jQuery pugins such as <a href="http://github.com/luning/jquery.parcel">jQuery Parcel</a> or <a href="https://github.com/jquery/jquery-datalink">jQuery Datalink</a>.
+_Formality_ was built as an aternative to other jQuery pugins such as <a href="http://github.com/luning/jquery.parcel">jQuery Parcel</a> or <a href="https://github.com/jquery/jquery-datalink">jQuery Datalink</a>.
 
 It does not intend to match the exhaustive features of these plugins, but provides advantages of its own:
 * It handles semantically nested forms to create a full object hierarchy
