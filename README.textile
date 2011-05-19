@@ -78,7 +78,7 @@ Will generate the following object:
 }
 </pre>
 
-3. Arrays
+h3. Arrays
 
 When using an array-like notation for the attribute value, _formality_ will create the corresponding array in which the values will be pushed.
 
