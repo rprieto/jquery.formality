@@ -1,8 +1,12 @@
 h1. jQuery formality
 
-*Formality* is a jQuery plugin that can process any part of the DOM and return an object representation of the inputs.
+h2. Elevator pitch
 
-You can think of it as the counterpart to templating (for example using <a href="https://github.com/janl/mustache.js/">Mustache</a> or <a href="https://github.com/jquery/jquery-tmpl">jQuery Template</a>). This can help implement MVVM-like models by simplifying the two-way mapping between the view and the presentation layer.
+*Formality* is a jQuery plugin that can process any part of the DOM and return an object representation of the inputs.
+It supports all types of inputs and complex forms, with ONGL syntax for object nesting.
+
+You can think of it as the counterpart to templating (for example using <a href="https://github.com/janl/mustache.js/">Mustache</a> or <a href="https://github.com/jquery/jquery-tmpl">jQuery Template</a>).
+It can help implement MVP or MVVM models by simplifying the two-way mapping between the view and the presentation layer.
 
 h2. Simple example
 
@@ -12,25 +16,26 @@ Given the following DOM structure:
   <form id="data">
     <input type="text" name="firstName" value="John" />
     <input type="text" name="lastName" value="Doe" />
-    <input type="radio" id="gender" value="male" checked="checked" />
-    <input type="radio" id="gender" value="female" />
-    <select id="interests" multiple="multiple">
+    <input type="radio" name="gender" value="male" checked="checked" />
+    <input type="radio" name="gender" value="female" />
+    <select name="interests" multiple="multiple">
       <option value="reading" selected="selected">Likes reading</option>
       <option value="travelling">Likes travelling</option>
       <option value="music" selected="selected">Plays music</option>
     </select>
+    <input type="checkbox" name="likesPets" checked="checked">Likes pets</input>
     <input type="checkbox" name="pets" value="dog" checked="checked">Has a dog</input>
     <input type="checkbox" name="pets" value="cat">Has a cat</input>
   </form>
 </pre>
 
-You can call
+If you call
 
 <pre>
   $('#data').formality()
 </pre>
 
-And it will return the following object:
+It will return the following object:
 
 <pre>
 {
@@ -38,87 +43,196 @@ And it will return the following object:
   lastName: 'Doe',
   gender: 'male',
   interests: ['reading', 'music'],
+  likesPets: 'true',
   pets: ['dog']
 }
 </pre>
 
-h2. Nested objects
+h2. Input types
 
-_Formality_ can also create a hierarchical representation of a nested form by adding a few attributes to the HTML. The main uses cases are probably:
+Formality supports all the usual input types, with each input or input group generating a single key in the target object.
+For each input type, different rules determine what value is set in the target object.
+
+All values are set a strings. You will need to do some processing to identify numbers and booleans if need be.
+However, if integrating with web services, most of them can do this mapping for you (ex. Spring MVC 3 + Jackson).
+
+As a side note, you do not need a &lt;form&gt; object to call _formality_. The XHTML spec does not require input elements to be inside a form.
+
+h3. Textboxes
+
+<pre>
+    <input type="text" name="firstName" />
+</pre>
+
+The value in the target object is set to the string value of the textbox.
+If the textbox is empty, it will set an empty string.
+
+<pre>
+{
+    firstName: 'Bob'
+}
+</pre>
+
+h3. Textareas
+
+<pre>
+    <input type="textarea" name="comment" />
+</pre>
+
+Similarily to text boxes, text areas will generate a single key set to the input's value.
+
+<pre>
+{
+    comment: 'That was interesting'
+}        
+
+h3. Radio butons
+
+<pre>
+    <input type="radio" name="gender" value="male" checked="checked" />
+    <input type="radio" name="gender" value="female" />
+</pre>
+
+Every group of radios with the same name generates a key in the target object, set to the value of the checked option.
+However, if no option is selected, it will _not_ create a key in the target object.
+
+<pre>
+{
+    gender: 'male'
+}
+</pre>
+
+h3. Checkboxes
+
+Checkboxes are usually used for 2 purposes:
+
+<ul><li>As a single true/false selection</li></ul>
+<pre>
+    <input type="checkbox" name="accept" /> I accept the terms and conditions
+</pre>
+
+If a checkbox has no value attribute, the value in the target object will be 'true' or 'false' depending on the checkbox state.
+
+<pre>
+{
+    accept: 'true'
+}
+</pre>
+
+<ul><li>As a way to select multple items of the same kind</li></ul>
+<pre>
+    <input type="checkbox" name="pets" value="dog" checked="checked" /> Dog
+    <input type="checkbox" name="pets" value="cat" checked="checked" /> Cat
+    <input type="checkbox" name="pets" value="iguana" /> Iguana
+</pre>
+
+Each group of checkboxes with the same name generates a single key in the target object.
+This key will be set to an array containing all the checked values.
+
+<pre>
+{
+    pets: ['dog', 'cat']
+}
+</pre>
+
+h3. Single selects
+
+<pre>
+    <input type="select" name="city">
+        <option value="Sydney" selected="selected">Sydney</option>
+        <option value="Paris" >Paris</option>
+        <option value="NewYork">New York</option>
+    </input>
+</pre>
+
+For dropdowns with a single selection, the object value will be set to the value of the selected option.
+Note that browsers automatically select the first option if the default is not set explicitely.
+
+<pre>
+{
+    city: 'Sydney'
+}
+
+h3. Multiple selects
+
+<pre>
+    <input type="select" name="cities" multiple="multiple">
+        <option value="Sydney" selected="selected">Sydney</option>
+        <option value="Paris" selected="selected">Paris</option>
+        <option value="NewYork">New York</option>
+    </input>
+</pre>
+
+Multiple selects always generate an array containing all the selected options.
+The array will be empty is no selection is made.
+
+<pre>
+{
+    cities: ['Sydney', 'Paris']
+}
+
+h2. ONGL support
+
+_Formality_ can also create a hierarchical representation of a form. The typical use cases are:
 
 * Creating a javascript object that can be used by the presenter or viewmodel, or that maps directly to your domain model.
-* Handling the case where user creates several items on the front end, which we intend on sending to the server in bulk using ajax.
+* When the user can create several items on the front end, which we intend on sending to the server in bulk using ajax.
 
-+How does it work?+
+h3. How does it work
 
-When creating the resulting object, formality uses the *data-formality-nested* attribute to create the hierarchy. This handles two types of nesting:
+_Formality_ supports basic ONGL notation to specify how inputs should be mapped to the target object.
+There are two ways of using it, which can also be combined for more flexibility:
 
-h3. Objects
+h4. Input name
 
-The basic case for using *data-formality-nested* is to group elements logically.
+If the input name is set to an ONGL path, the input's value will be set in the target object accordingly.
+You can also set a context on any HTML elements, which will apply to every input they contains. Contexts can be ONGL paths themselves.
+
+The 4 following snippets are equivalent:
 
 <pre>
-  <form>
-    <input type="text" name="name" value="Australia" />
-    <div data-formality-nested="government">
-      <input type="text" name="monarch" value="Elizabeth II" />
-      <div data-formality-nested="ministers">
-        <input type="text" name="primeMinister" value="Julia Gillard" />
-        <input type="text" name="foreignAffairs" value="Kevin Rudd" />
-      </div>
+    <input type="text" name="person.address.state" />
+    <input type="text" name="person.address.postcode" />
+</pre>
+
+<pre>
+    <form data-formality-context="person">
+        <div data-formality-context="address">
+            <input type="text" name="state" />
+            <input type="text" name="postcode" />
+        </div>
+    </form>
+</pre>
+
+<pre>
+    <div data-formality-context="person.address">
+        <input type="text" name="state" />
+        <input type="text" name="postcode" />
     </div>
-  </form>
 </pre>
 
-Will generate the following object:
-
 <pre>
-{
-  name: 'Australia',
-  government: {
-    monarch: 'Elizabeth II',
-    ministers: {
-      primeMinister: 'Julia Gillard',
-      foreignAffairs: 'Kevin Rudd'
-    }
-  }
-}
-</pre>
-
-h3. Arrays
-
-When using an array-like notation for the attribute value, _formality_ will create the corresponding array in which the values will be pushed.
-
-<pre>
-  <form> 
-    <input type="text" name="name" value="Australia" />
-    <div data-formality-nested="cities[0]">
-      <input type="text" name="name" value="Sydney" />
-      <input type="text" name="postcode" value="2000" />
+    <div data-formality-context="person">
+        <input type="text" name="address.state" />
+        <input type="text" name="address.postcode" />
     </div>
-    <div data-formality-nested="cities[1]">
-      <input type="text" name="name" value="Melbourne" />
-      <input type="text" name="postcode" value="3000" />
-    </div> 
-  </form>
 </pre>
 
-will generate the following object:
+h3. Element types
+
+_Formality_ currently supports 2 ONGL notations:
+
+h4. Objects
 
 <pre>
-{
-  name: 'Australia',
-  cities: [
-    {
-      name: 'Sydney',
-      postcode: '2000'
-    },
-    {
-      name: 'Melbourne',
-      postcode: '3000'
-    },
-  ]
-}
+    <input type="text" name="person.address.state" />
+</pre>
+
+h4. Arrays
+
+<pre>
+    <input type="text" name="world.countries[0].name" />
+    <input type="text" name="world.countries[1].name" />
 </pre>
 
 h2. Alternatives
