@@ -3,7 +3,8 @@ $.fn.extend(
   (function() {
         
 	//
-	// ECMA Script 5 functions implemented by Chrome and Firefox 4, but not older browsers
+	// ECMA Script 5 and other functional methods
+	// Some of these are implemented by Chrome and Firefox 4, but not older browsers
 	//
 	
     var reduce = function(list, fn, aggregate) {
@@ -21,8 +22,22 @@ $.fn.extend(
 		return keys;
 	}
 
+    var groupBy = function(array, getKeyFromItem) {
+        var groups = {};
+        array.forEach(function(item) {
+            var key = getKeyFromItem(item);
+            var value = groups[key];
+            if (!value) value = groups[key] = [];
+            value.push(item);
+        });
+        return reduce(getKeys(groups), function(key, result) {
+            result.push(groups[key]);
+            return result;
+        }, []);
+    };
+
     //
-    // Helper methods
+    // Input attributes used to get the target object path
     //
 
     var getFormalityAttribute = function($item) {
@@ -141,14 +156,18 @@ $.fn.extend(
 	      return form;
 	    };
 	
-	    var checkboxes = function($item, form) {
-	      var name = getKey($item);
-	      if (!(name in form)) {
-	        form[name] = [];
-	      }
-	      if ($item.is(':checked')) {
-	        form[name].push($item.val());
-	      }
+	    var checkboxes = function(group, form) {
+            var key = getKey(group[0]);
+            if (group.length == 1) {
+                form[key] = group[0].is(':checked') ? 'true' : 'false';
+            } else {
+                form[key] = reduce(group, function($item, checkedValues) {
+                    if ($item.is(':checked')) {
+                        checkedValues.push($item.val());
+                    }
+                    return checkedValues;
+                }, []);
+            }
 	      return form;
 	    };
     	
@@ -160,11 +179,16 @@ $.fn.extend(
     	
     	return {
     	  objectFromValues: function(inputs) {
-		      var object = {};   
+		      var object = {};
+		        
 		      reduce(inputs.filter(is(':text')), textsAndRadios, object);
 		      reduce(inputs.filter(is(':radio:checked')), textsAndRadios, object);
 		      reduce(inputs.filter(is('select')), selects, object);
-		      reduce(inputs.filter(is(':checkbox')), checkboxes, object);
+
+              // Group checkboxes by name to identify single vs. groups
+		      var allCheckboxes = inputs.filter(is(':checkbox'));
+		      reduce(groupBy(allCheckboxes, getKey), checkboxes, object);
+		      
 		      return object;      
 		    }
     	}

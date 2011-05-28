@@ -1,7 +1,21 @@
 
 describe('checkboxes', function() {
 
-  it('returns an array of checked values for a checkbox group', function() {
+  it('returns true/false for single checkboxes', function() {
+    var fixture = $(
+      '<form>' +
+        '<input type="checkbox" name="isChecked" checked="checked" />' +
+        '<input type="checkbox" name="notChecked" />' +
+      '</form>'
+    );
+    var form = fixture.formality();
+    expect(form).toEqual({
+    	isChecked: 'true',
+    	notChecked: 'false'
+    });
+  });
+
+  it('returns an array of checked values for checkbox groups', function() {
     var fixture = $(
       '<form>' + 
         '<input type="checkbox" name="foo" value="one" checked="checked" />' + 
@@ -15,7 +29,7 @@ describe('checkboxes', function() {
     });
   });
 
-  it('returns an array even for a single checked value', function() {
+  it('returns an array even for a group with a single checked value', function() {
     var fixture = $(
       '<form>' + 
         '<input type="checkbox" name="foo" value="one" checked="checked" />' + 
