@@ -1,6 +1,6 @@
 $.fn.extend(
   
-  (function() {
+    (function() {
         
 	//
 	// ECMA Script 5 and other functional methods
@@ -8,10 +8,10 @@ $.fn.extend(
 	//
 	
     var reduce = function(list, fn, aggregate) {
-      list.forEach(function(item) {
-        aggregate = fn.apply(this, [item, aggregate]);
-      });
-      return aggregate;
+        list.forEach(function(item) {
+            aggregate = fn.apply(this, [item, aggregate]);
+        });
+        return aggregate;
     };
     
 	var getKeys = function(obj){
@@ -30,6 +30,11 @@ $.fn.extend(
             if (!value) value = groups[key] = [];
             value.push(item);
         });
+        return groups;
+    };
+
+    var splitBuckets = function(array, splitOn) {
+        var groups = groupBy(array, splitOn);
         return reduce(getKeys(groups), function(key, result) {
             result.push(groups[key]);
             return result;
@@ -41,7 +46,7 @@ $.fn.extend(
     //
 
     var getFormalityAttribute = function($item) {
-      return $item.attr('name') || $item.attr('id');
+        return $item.attr('name') || $item.attr('id');
     };
 
     //
@@ -129,7 +134,6 @@ $.fn.extend(
 	    
 	    var create = function($root) {	
 			var $inputs = $('input,select', $root);
-			
 			var hierarchy = hierarchyLevel();     
 			
 			$inputs.each(function(_, input) {
@@ -155,20 +159,20 @@ $.fn.extend(
     var inputSet = function() {
     		
 	    var getKey = function($item) {
-	      return getFormalityAttribute($item).split('.').pop();
+            return getFormalityAttribute($item).split('.').pop();
 	    };
 		
 	    var textsAndRadios = function($item, form) {
-	      form[getKey($item)] = $item.val();
-	      return form;
+            form[getKey($item)] = $item.val();
+            return form;
 	    }
 	
 	    var selects = function($item, form) {
-	      var values = $item.find('option:selected').map(function(_, option) {
-	        return $(option).val();
-	      }).get();
-	      form[getKey($item)] = values.length > 1 ? values : values[0];
-	      return form;
+            var values = $item.find('option:selected').map(function(_, option) {
+                return $(option).val();
+            }).get();
+            form[getKey($item)] = values.length > 1 ? values : values[0];
+            return form;
 	    };
 	
 	    var checkboxes = function(group, form) {
@@ -183,7 +187,7 @@ $.fn.extend(
                     return checkedValues;
                 }, []);
             }
-	      return form;
+            return form;
 	    };
     	
     	var is = function(type) {
@@ -193,18 +197,18 @@ $.fn.extend(
     	};
     	
     	return {
-    	  objectFromValues: function(inputs) {
-		      var object = {};
-		        
-		      reduce(inputs.filter(is(':text')), textsAndRadios, object);
-		      reduce(inputs.filter(is(':radio:checked')), textsAndRadios, object);
-		      reduce(inputs.filter(is('select')), selects, object);
+            objectFromValues: function(inputs) {
+                var object = {};
 
-              // Group checkboxes by name to identify single vs. groups
-		      var allCheckboxes = inputs.filter(is(':checkbox'));
-		      reduce(groupBy(allCheckboxes, getKey), checkboxes, object);
-		      
-		      return object;      
+                reduce(inputs.filter(is(':text')), textsAndRadios, object);
+                reduce(inputs.filter(is(':radio:checked')), textsAndRadios, object);
+                reduce(inputs.filter(is('select')), selects, object);
+
+                // Group checkboxes by name to identify single vs. groups
+                var allCheckboxes = inputs.filter(is(':checkbox'));
+                reduce(splitBuckets(allCheckboxes, getKey), checkboxes, object);
+
+                return object;
 		    }
     	}
     		
@@ -239,7 +243,7 @@ $.fn.extend(
 	//
 	
     return {
-      formality: function() { return formValues(this); }
+        formality: function() { return formValues(this); }
     }
     
   })()
