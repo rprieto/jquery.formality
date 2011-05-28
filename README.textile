@@ -186,10 +186,10 @@ h3. How does it work
 _Formality_ supports basic ONGL notation to specify how inputs should be mapped to the target object.
 There are two ways of using it, which can also be combined for more flexibility:
 
-h4. Input name
-
-If the input name is set to an ONGL path, the input's value will be set in the target object accordingly.
-You can also set a context on any HTML elements, which will apply to every input they contains. Contexts can be ONGL paths themselves.
+<ul>
+    <li>If the input name is set to an ONGL path, the input's value will be set in the target object accordingly.</li>
+    <li>You can also set a context on any HTML elements, which will apply to every input they contains. Contexts can be ONGL paths themselves.</li>
+</ul>
 
 The 4 following snippets are equivalent:
 
