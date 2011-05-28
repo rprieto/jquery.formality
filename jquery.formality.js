@@ -70,8 +70,23 @@ $.fn.extend(
             return context.concat(path);
         };
 
+        var createNode = function(targetObject, pathItem, itemValue) {
+            var arrayMatch = pathItem.match(/(.*?)\[(\d)\]/);
+	    	if (arrayMatch) {
+		   		var arrayName = arrayMatch[1];
+	    		var index = arrayMatch[2];
+	    		if (!(targetObject[arrayName])) {
+	    			targetObject[arrayName] = [];
+	    		}
+	    		targetObject[arrayName][index] = itemValue(targetObject[arrayName][index]);
+	    	} else {
+	    		targetObject[pathItem] = itemValue(targetObject[pathItem]);
+	    	}
+        };
+
         return {
-            getFullPath: getFullPath
+            getFullPath: getFullPath,
+            createNode: createNode
         }
 
     };
@@ -201,21 +216,15 @@ $.fn.extend(
 	//
 	
 	var formValues = function($root) {
+
+    	var ongl = ONGL();
     	
 	    var processLevel = function(level, object) {
 	    	var object = inputSet().objectFromValues(level.elements);
 	    	getKeys(level.children).forEach(function(name) {
-	    		var arrayMatch = name.match(/(.*?)\[(\d)\]/);
-	    		if (arrayMatch) {
-		   			var arrayName = arrayMatch[1];
-	    			var index = arrayMatch[2];
-	    			if (!(object[arrayName])) {
-	    				object[arrayName] = [];
-	    			}
-	    			object[arrayName][index] = processLevel(level.children[name], object[arrayName][index]);
-	    		} else {
-	    			object[name] = processLevel(level.children[name], object[name]);
-	    		}
+	    	    var target = ongl.createNode(object, name, function(leaf) {
+	    	        return processLevel(level.children[name], leaf);
+	    	    });
 	    	});
 	    	return object;
 	    };
