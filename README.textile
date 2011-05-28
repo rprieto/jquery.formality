@@ -85,6 +85,7 @@ Similarily to text boxes, text areas will generate a single key set to the input
 {
     comment: 'That was interesting'
 }        
+</pre>
 
 h3. Radio butons
 
@@ -152,6 +153,7 @@ Note that browsers automatically select the first option if the default is not s
 {
     city: 'Sydney'
 }
+</pre>
 
 h3. Multiple selects
 
@@ -170,7 +172,8 @@ The array will be empty is no selection is made.
 {
     cities: ['Sydney', 'Paris']
 }
-
+</pre>
+        
 h2. ONGL support
 
 _Formality_ can also create a hierarchical representation of a form. The typical use cases are:
