@@ -13,9 +13,9 @@ describe('nested', function() {
     var fixture = $(
       '<form>' + 
         '<div id="countries">' +
-          '<div class="country" data-formality-nested="countries[0]">' +
+          '<div class="country" data-formality-context="countries[0]">' +
 	        '<input type="text" name="name" value="Australia" />' +
-	        '<div data-formality-nested="government">' +
+	        '<div data-formality-context="government">' +
    	    	  '<div>' + 
 	            '<input type="checkbox" name="type" value="Parliamentary" checked="checked" />' + 
 	            '<input type="checkbox" name="type" value="Constitutional" checked="checked" />' + 
@@ -23,12 +23,12 @@ describe('nested', function() {
 	            '<input type="checkbox" name="type" value="Monarchy" checked="checked" />' + 
 	          '</div>'	+        
 	          '<input type="text" name="monarch" value="Elizabeth II" />' +
-		      '<div data-formality-nested="ministers">' +
+		      '<div data-formality-context="ministers">' +
 		        '<input type="text" name="primeMinister" value="Julia Gillard" />' +
 		        '<input type="text" name="foreignAffairs" value="Kevin Rudd" />' +
 		      '</div>' +
 	        '</div>' +
-	        '<div data-formality-nested="cities[0]">' +
+	        '<div data-formality-context="cities[0]">' +
 	          '<input type="text" name="name" value="Sydney" />' +
 	          '<input type="text" name="postcode" value="2000" />' +
 	          '<form>' +
@@ -36,7 +36,7 @@ describe('nested', function() {
         	    '<input type="radio" name="visited" value="false" />' +        	        	        
         	  '</form>' +
 	        '</div>' +
-	        '<div data-formality-nested="cities[1]">' +
+	        '<div data-formality-context="cities[1]">' +
 	          '<input type="text" name="name" value="Melbourne" />' +
 	          '<input type="text" name="postcode" value="3000" />' +
 	          '<form>' +
@@ -45,9 +45,9 @@ describe('nested', function() {
         	  '</form>' +
 	        '</div>' +
 	      '</div>' +
-          '<div class="country" data-formality-nested="countries[1]">' +
+          '<div class="country" data-formality-context="countries[1]">' +
 	        '<input type="text" name="name" value="France" />' +
-	        '<div data-formality-nested="government">' +
+	        '<div data-formality-context="government">' +
    	    	  '<div>' + 
 	            '<input type="checkbox" name="type" value="Parliamentary" />' + 
 	            '<input type="checkbox" name="type" value="Constitutional" checked="checked" />' + 
@@ -55,11 +55,11 @@ describe('nested', function() {
 	            '<input type="checkbox" name="type" value="Monarchy" />' + 
 	          '</div>'	+        
 	          '<input type="text" name="president" value="Nicolas Sarkozy" />' +
-		      '<div data-formality-nested="ministers">' +
+		      '<div data-formality-context="ministers">' +
 		        '<input type="text" name="primeMinister" value="Francois Fillon" />' +
 		      '</div>' +
 	        '</div>' +
-	        '<div data-formality-nested="cities[0]">' +
+	        '<div data-formality-context="cities[0]">' +
 	          '<input type="text" name="name" value="Paris" />' +
 	          '<input type="text" name="postcode" value="75001" />' +
 	          '<form>' +
@@ -67,7 +67,7 @@ describe('nested', function() {
         	    '<input type="radio" name="visited" value="false" />' +        	        	        
         	  '</form>' +
 	        '</div>' +
-	        '<div data-formality-nested="cities[1]">' +
+	        '<div data-formality-context="cities[1]">' +
 	          '<input type="text" name="name" value="Lyon" />' +
 	          '<input type="text" name="postcode" value="69001" />' +
 	          '<form>' +

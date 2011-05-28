@@ -20,12 +20,53 @@ $.fn.extend(
 		}
 		return keys;
 	}
-    
+
+    //
+    // Helper methods
+    //
+
+    var getFormalityAttribute = function($item) {
+      return $item.attr('name') || $item.attr('id');
+    };
+
+    //
+    // ONGL module: process an input's attributes and parent contexts
+    //              to get the full path in the target object
+    //
+
+    var ONGL = function() {
+
+	    var getParentContext = function($root, $input) {
+	    	var $usefulParents = $input.parents('*[data-formality-context]');
+	    	return $usefulParents.map(function(_, parent) {
+	    		return $(parent).attr('data-formality-context');
+	    	}).get().reverse();
+	    };
+
+        var getInputPath = function($input) {
+            var path = getFormalityAttribute($input).split('.');
+            path.pop();
+            return path;
+        };
+
+        var getFullPath = function($root, $input) {
+            var context = getParentContext($root, $input);
+            var path = getInputPath($input);
+            return context.concat(path);
+        };
+
+        return {
+            getFullPath: getFullPath
+        }
+
+    };
+
 	//
 	// Structure of target inputs that mirrors the final hierarchy
 	//
 	//    elements: [
-	//      $input1, $input2
+	//      $input1,
+	//      $input2
 	//    ],
 	//
 	//    children: {
@@ -43,17 +84,10 @@ $.fn.extend(
 				children: {}
 			};
 		};
-			
-	    var getAttributes = function($root, $input) {
-	    	var $usefulParents = $input.parents('*[data-formality-nested]');
-	    	return $usefulParents.map(function(_, parent) {
-	    		return $(parent).attr('data-formality-nested');
-	    	}).get().reverse();
-	    };
-	    
-	    var completeHierarchy = function(object, attributes) {
+
+	    var completeHierarchy = function(object, targetPath) {
 	    	var leaf = object;
-	    	reduce(attributes, function(name, result) {
+	    	reduce(targetPath, function(name, result) {
 	    		if (!(result.children[name])) {
 	    			result.children[name] = hierarchyLevel();
 	    		}
@@ -69,8 +103,8 @@ $.fn.extend(
 			var hierarchy = hierarchyLevel();     
 			
 			$inputs.each(function(_, input) {
-				var attributes = getAttributes($root, $(input));
-				var leaf = completeHierarchy(hierarchy, attributes);
+				var fullPath = ONGL().getFullPath($root, $(input));
+				var leaf = completeHierarchy(hierarchy, fullPath);
 				leaf.elements.push($(input));
 			});
 			
@@ -90,8 +124,8 @@ $.fn.extend(
 	    
     var inputSet = function() {
     		
-	    var getKey = function($item) {      
-	      return $item.attr('name') || $item.attr('id');
+	    var getKey = function($item) {
+	      return getFormalityAttribute($item).split('.').pop();
 	    };
 		
 	    var textsAndRadios = function($item, form) {
