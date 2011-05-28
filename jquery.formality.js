@@ -171,7 +171,8 @@ $.fn.extend(
             var values = $item.find('option:selected').map(function(_, option) {
                 return $(option).val();
             }).get();
-            form[getKey($item)] = values.length > 1 ? values : values[0];
+            var isMultiple = $item.attr('multiple') != '';
+            form[getKey($item)] = isMultiple ? (values || []) : values[0];
             return form;
 	    };
 	

@@ -1,5 +1,5 @@
 
-describe('nested', function() {
+describe('performance', function() {
 
   function getExecutionTime(code) {
 	var start = new Date().getTime();

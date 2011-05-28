@@ -16,7 +16,7 @@ describe('select inputs', function() {
     });  
   });
 
-  it('uses the first option is no option is selected explicitely', function() {
+  it('relies on the browser defaulting to the first option', function() {
     var fixture = $(
       '<form>' + 
         '<select name="foo">' + 
@@ -47,7 +47,7 @@ describe('select inputs', function() {
     });
   });
 
-  it('does not create a propery for lists without a selection', function() {
+  it('creates an empty array for multiple selects without a selection', function() {
     var fixture = $(
       '<form>' + 
         '<select name="foo" multiple="multiple">' + 
@@ -58,7 +58,9 @@ describe('select inputs', function() {
       '</form>'
     );
     var form = fixture.formality();
-    expect(form).toEqual({});
+    expect(form).toEqual({
+        foo: []
+    });
   });
 
 });
