@@ -54,6 +54,35 @@ describe('ONGL names to create nested objects', function() {
     });
   });
 
+  it('processes ONGL correctly regardless of the sequence of inputs', function() {
+    var fixture = $(
+      '<form>' +
+        '<input type="text" name="cities[0].name" value="Sydney" />' +
+        '<input type="text" name="cities[1].postcode" value="3000" />' +
+        '<div>' +
+          '<input type="text" name="name" value="Australia" />' +
+          '<input type="text" name="cities[0].postcode" value="2000" />' +
+        '</div>' +
+        '<input type="text" name="cities[1].name" value="Melbourne" />' +
+      '</form>'
+    );
+
+    var country = fixture.formality();
+
+    expect(country).toEqual({
+    	name: 'Australia',
+    	cities: [
+    		{
+    			name: 'Sydney',
+    			postcode: '2000'
+    		},
+    		{
+    			name: 'Melbourne',
+    			postcode: '3000'
+    		},
+    	]
+    });
+  });
 
 });
 
