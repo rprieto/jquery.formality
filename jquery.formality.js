@@ -57,10 +57,11 @@ $.fn.extend(
     var OGNL = function() {
 
 	    var getParentContext = function($root, $input) {
-	    	var $usefulParents = $input.parents('*[data-formality-context]');
-	    	return $usefulParents.map(function(_, parent) {
-	    		return $(parent).attr('data-formality-context');
-	    	}).get().reverse();
+	    	var usefulParents = $input.parents('*[data-formality-context]').get();
+	    	return reduce(usefulParents, function(parent, result) {
+	    		var contextElements = $(parent).attr('data-formality-context').split('.').reverse();
+				return result.concat(contextElements);
+	    	}, []).reverse();
 	    };
 
         var getInputPath = function($input) {
