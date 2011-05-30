@@ -50,11 +50,11 @@ $.fn.extend(
     };
 
     //
-    // ONGL module: process an input's attributes and parent contexts
+    // OGNL module: process an input's attributes and parent contexts
     //              to get the full path in the target object
     //
 
-    var ONGL = function() {
+    var OGNL = function() {
 
 	    var getParentContext = function($root, $input) {
 	    	var $usefulParents = $input.parents('*[data-formality-context]');
@@ -222,12 +222,12 @@ $.fn.extend(
 	
 	var formValues = function($root) {
 
-    	var ongl = ONGL();
+    	var ognl = OGNL();
     	
 	    var processLevel = function(level, object) {
 	    	var object = inputSet().objectFromValues(level.elements);
 	    	getKeys(level.children).forEach(function(name) {
-	    	    var target = ongl.createNode(object, name, function(leaf) {
+	    	    var target = ognl.createNode(object, name, function(leaf) {
 	    	        return processLevel(level.children[name], leaf);
 	    	    });
 	    	});

@@ -29,7 +29,7 @@ describe('context', function() {
     });
   });
 
-  it('understands ONGL-type paths in the context attribute', function() {
+  it('understands OGNL-type paths in the context attribute', function() {
     var fixture = $(
       '<form>' +
         '<input type="text" name="name" value="Bob" />' +

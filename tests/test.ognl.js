@@ -1,7 +1,7 @@
 
-describe('ONGL names to create nested objects', function() {
+describe('OGNL names to create nested objects', function() {
 
-  it('processes basic ONGL name hierarchies', function() {
+  it('processes basic OGNL name hierarchies', function() {
     var fixture = $(
       '<form>' + 
         '<input type="text" name="country.name" value="Australia" />' +
@@ -26,7 +26,7 @@ describe('ONGL names to create nested objects', function() {
   });
 
 
-  it('processes ONGL array notation to create nested arrays', function() {
+  it('processes OGNL array notation to create nested arrays', function() {
     var fixture = $(
       '<form>' + 
         '<input type="text" name="name" value="Australia" />' +
@@ -54,7 +54,7 @@ describe('ONGL names to create nested objects', function() {
     });
   });
 
-  it('processes ONGL correctly regardless of the sequence of inputs', function() {
+  it('processes OGNL correctly regardless of the sequence of inputs', function() {
     var fixture = $(
       '<form>' +
         '<input type="text" name="cities[0].name" value="Sydney" />' +
