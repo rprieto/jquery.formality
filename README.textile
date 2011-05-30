@@ -1,6 +1,6 @@
 h1. jQuery formality
 
-*Formality* is a jQuery plugin that can process any part of the DOM and return an object representation of the inputs.
+_Formality_ is a jQuery plugin that can process any part of the DOM and return an object representation of the inputs.
 It supports all types of inputs and complex forms, with ONGL syntax for object nesting.
 
 h2. Simple example
@@ -43,5 +43,5 @@ It will return the following object:
 }
 </pre>
 
-<a href="https://github.com/rprieto/jquery.formality/wiki">Head over to the wiki</a> to see how to use Formality and learn more about the options:
+<a href="https://github.com/rprieto/jquery.formality/wiki">Head over to the wiki</a> to see how to use _Formality_ and learn more about the options.
 
