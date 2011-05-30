@@ -136,9 +136,10 @@ $.fn.extend(
 	    var create = function($root) {	
 			var $inputs = $('input,select', $root);
 			var hierarchy = hierarchyLevel();     
-			
+			var ognl = OGNL();
+
 			$inputs.each(function(_, input) {
-				var fullPath = ONGL().getFullPath($root, $(input));
+				var fullPath = ognl.getFullPath($root, $(input));
 				var leaf = completeHierarchy(hierarchy, fullPath);
 				leaf.elements.push($(input));
 			});
@@ -172,7 +173,7 @@ $.fn.extend(
             var values = $item.find('option:selected').map(function(_, option) {
                 return $(option).val();
             }).get();
-            var isMultiple = $item.attr('multiple') != '';
+            var isMultiple = $item.attr('multiple') === 'multiple' || $item.attr('multiple') === true;
             form[getKey($item)] = isMultiple ? (values || []) : values[0];
             return form;
 	    };
