@@ -4,9 +4,9 @@ describe('inputs', function() {
   it('uses the input names, or the ID if they have no name', function() {
     var fixture = $(
       '<form>' + 
-        '<input name="fooName" />' + 
-        '<input id="barId" />' +
-        '<input name="fizzName" id="fizzId" />' +
+        '<input type="text" name="fooName" />' + 
+        '<input type="text" id="barId" />' +
+        '<input type="text" name="fizzName" id="fizzId" />' +
       '</form>'
     );
     var form = fixture.formality();
@@ -17,4 +17,3 @@ describe('inputs', function() {
   });
 
 });
-

@@ -198,12 +198,17 @@ $.fn.extend(
     			return item.is(type);
     		}
     	};
-    	
+    	    	
     	return {
             objectFromValues: function(inputs) {
                 var object = {};
 
-                reduce(inputs.filter(is(':text')), textsAndRadios, object);
+				var textTypes = ['text', 'email', 'url', 'tel', 'number', 'range', 'date', 'datetime', 'search'];
+		    	var reduceTextFields = function(type) {
+					reduce(inputs.filter(is('input[type=' + type + ']')), textsAndRadios, object);
+		    	};
+    			textTypes.forEach(reduceTextFields);
+
                 reduce(inputs.filter(is(':radio:checked')), textsAndRadios, object);
                 reduce(inputs.filter(is('select')), selects, object);
 
