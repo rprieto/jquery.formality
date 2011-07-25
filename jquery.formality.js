@@ -200,10 +200,14 @@ $.fn.extend(
     	};
     	    	
     	return {
-            objectFromValues: function(inputs) {
+            objectFromValues: function(inputs, includeHidden) {
                 var object = {};
 
 				var textTypes = ['text', 'email', 'url', 'tel', 'number', 'range', 'date', 'datetime', 'search'];
+				if (includeHidden === true) {
+					textTypes.push('hidden');
+				}
+				
 		    	var reduceTextFields = function(type) {
 					reduce(inputs.filter(is('input[type=' + type + ']')), textsAndRadios, object);
 		    	};
@@ -222,17 +226,17 @@ $.fn.extend(
     		
     };    
 
-	
+
 	//
 	// Final object returned by the plugin
 	//
 	
-	var formValues = function($root) {
+	var formValues = function($root, options) {
 
     	var ognl = OGNL();
     	
 	    var processLevel = function(level, object) {
-	    	var object = inputSet().objectFromValues(level.elements);
+	    	var object = inputSet().objectFromValues(level.elements, options.includeHidden);
 	    	getKeys(level.children).forEach(function(name) {
 	    	    var target = ognl.createNode(object, name, function(leaf) {
 	    	        return processLevel(level.children[name], leaf);
@@ -247,11 +251,21 @@ $.fn.extend(
 	};
 
 	//
+	// Default plugin options
+	//
+	
+	var defaultOptions = {
+		includeHidden: false
+	};
+
+	//
 	// Entry point:  $('#myForm').formality();
 	//
 	
     return {
-        formality: function() { return formValues(this); }
+        formality: function(options) {
+        	return formValues(this, options || defaultOptions);
+        }
     }
     
   })()
