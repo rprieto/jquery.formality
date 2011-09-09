@@ -193,11 +193,17 @@ $.fn.extend(
             return form;
 	    };
     	
-    	var is = function(type) {
-    		return function(item) {
-    			return item.is(type);
+    	var ofType = function(type) {
+    		return function($input) {
+    			return $input.attr('type') === type;
     		}
     	};
+
+		var ofTag = function(tag) {
+			return function($input) {
+				return $input.get(0).nodeName.toLowerCase() === tag;
+			};
+		};
     	    	
     	return {
             objectFromValues: function(inputs, includeHidden) {
@@ -209,20 +215,21 @@ $.fn.extend(
 				}
 				
 		    	var reduceTextFields = function(type) {
-					reduce(inputs.filter(is('input[type=' + type + ']')), textsAndRadios, object);
+					reduce(inputs.filter(ofType(type)), textsAndRadios, object);
 		    	};
     			textTypes.forEach(reduceTextFields);
 
-                reduce(inputs.filter(is(':radio:checked')), textsAndRadios, object);
-                reduce(inputs.filter(is('select')), selects, object);
+				reduce(inputs.filter(function($input) { return $input.attr('type') === 'radio' && $input.is(':checked'); }), textsAndRadios, object);
+				
+				reduce(inputs.filter(ofTag('select')), selects, object);
 
                 // Group checkboxes by name to identify single vs. groups
-                var allCheckboxes = inputs.filter(is(':checkbox'));
+				var allCheckboxes = inputs.filter(ofType('checkbox'));
                 reduce(splitBuckets(allCheckboxes, getKey), checkboxes, object);
 
                 return object;
 		    }
-    	}
+    	};
     		
     };    
 
