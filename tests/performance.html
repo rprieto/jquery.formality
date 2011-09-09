@@ -1,0 +1,116 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+  "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+
+	<head>
+	  <title>Performance test</title>
+	  <script type="text/javascript" src="3rdparty/ddr-ecma5-1.0.min.js"></script>
+	  <script type="text/javascript" src="3rdparty/jquery-1.4.4.min.js"></script>
+	  <script type="text/javascript" src="../jquery.formality.js"></script>
+	</head>
+	
+	<body>
+
+		<div style="border: 1px solid black; padding: 10px;">
+			<input type="button" id="perf" value="Run perf" />
+			Formality took <span id="time">0</span> miliseconds.
+		</div>
+	
+		<div id="container" style="border: 1px solid black; padding: 10px;">
+			<div>
+				<select id="trip.transport" multiple="multiple">
+					<option value="car">Car</option>
+					<option value="train" selected="selected">Train</option>
+					<option value="plane" selected="selected">Plane</option>
+				</select>
+				<select id="trip.duration">
+					<option value="weekend">Weekend</option>
+					<option value="week" selected="selected">Week</option>
+					<option value="month">Month</option>
+					<option value="year">Year</option>
+				</select>
+			</div>
+			<div id="countries">
+			  <div class="country" data-formality-context="countries[0]">
+				<input type="text" name="name" value="Australia" />
+				<div data-formality-context="government">
+				  <div> 
+					<input type="checkbox" name="type" value="Parliamentary" checked="checked" /> 
+					<input type="checkbox" name="type" value="Constitutional" checked="checked" /> 
+					<input type="checkbox" name="type" value="Republic" /> 
+					<input type="checkbox" name="type" value="Monarchy" checked="checked" /> 
+				  </div>        
+				  <input type="text" name="monarch" value="Elizabeth II" />
+				  <div data-formality-context="ministers">
+					<input type="text" name="primeMinister" value="Julia Gillard" />
+					<input type="text" name="foreignAffairs" value="Kevin Rudd" />
+				  </div>
+				</div>
+				<div data-formality-context="cities[0]">
+				  <input type="text" name="name" value="Sydney" />
+				  <input type="text" name="postcode" value="2000" />
+				  <form>
+					<input type="radio" name="visited" value="true" checked="checked" />
+					<input type="radio" name="visited" value="false" />
+				  </form>
+				</div>
+				<div data-formality-context="cities[1]">
+				  <input type="text" name="name" value="Melbourne" />
+				  <input type="text" name="postcode" value="3000" />
+				  <form>
+					<input type="radio" name="visited" value="true" checked="checked" />
+					<input type="radio" name="visited" value="false" />
+				  </form>
+				</div>
+			  </div>
+			  <div class="country" data-formality-context="countries[1]">
+				<input type="text" name="name" value="France" />
+				<div data-formality-context="government">
+				  <div> 
+					<input type="checkbox" name="type" value="Parliamentary" /> 
+					<input type="checkbox" name="type" value="Constitutional" checked="checked" /> 
+					<input type="checkbox" name="type" value="Republic" checked="checked" /> 
+					<input type="checkbox" name="type" value="Monarchy" /> 
+				  </div>        
+				  <input type="text" name="president" value="Nicolas Sarkozy" />
+				  <input type="text" name="ministers.primeMinister" value="Francois Fillon" />
+				</div>
+				<input type="text" name="cities[0].name" value="Paris" />
+				<input type="text" name="cities[0].postcode" value="75001" />
+				<form>
+				  <input type="radio" name="cities[0].visited" value="true" checked="checked" />
+				  <input type="radio" name="cities[0].visited" value="false" />
+				</form>
+				<input type="text" name="cities[1].name" value="Lyon" />
+				<input type="text" name="cities[1].postcode" value="69001" />
+				<form>
+				  <input type="radio" name="cities[1].visited" value="true" />
+				  <input type="radio" name="cities[1].visited" value="false"  checked="checked" />
+				</form>
+			  </div>
+			</div>
+		</div>
+	
+	
+	<script type="text/javascript">
+	
+		function getTimeToProcess() {
+			var start = new Date().getTime();
+			for (var i = 0; i < 5; ++i) {
+				var model = $('#container').formality();
+			}
+			var end = new Date().getTime();			
+			return end - start;		
+		}
+	
+		$(document).ready(function() {
+			$('#perf').click(function() {
+				$('#time').text(getTimeToProcess());		
+			});
+		});
+		
+	</script>
+
+	</body>
+	
+</html>
