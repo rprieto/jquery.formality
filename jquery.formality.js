@@ -77,7 +77,7 @@ $.fn.extend(
         };
 
         var createNode = function(targetObject, pathItem, itemValue) {
-            var arrayMatch = pathItem.match(/(.*?)\[(\d)\]/);
+            var arrayMatch = pathItem.match(/(.*?)\[(\d+)\]/);
 	    	if (arrayMatch) {
 		   		var arrayName = arrayMatch[1];
 	    		var index = arrayMatch[2];
